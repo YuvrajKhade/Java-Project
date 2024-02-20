@@ -42,8 +42,6 @@ public class Training extends javax.swing.JFrame {
         add1 = new javax.swing.JButton();
         add2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jPanel1.setBackground(new java.awt.Color(204, 153, 0));
 
         jLabel1.setFont(new java.awt.Font("Script MT Bold", 1, 48)); // NOI18N

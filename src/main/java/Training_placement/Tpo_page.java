@@ -35,8 +35,6 @@ public class Tpo_page extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jPanel1.setBackground(new java.awt.Color(102, 0, 0));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tnp_cell.jpg"))); // NOI18N

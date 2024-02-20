@@ -54,8 +54,6 @@ public class home_page extends javax.swing.JFrame {
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/star (1).png"))); // NOI18N
         jLabel13.setPreferredSize(new java.awt.Dimension(16, 17));
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jPanel1.setBackground(new java.awt.Color(255, 206, 18));
 
         jLabel2.setFont(new java.awt.Font("Trebuchet MS", 1, 36)); // NOI18N

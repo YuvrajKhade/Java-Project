@@ -35,8 +35,6 @@ public class Student_loginpage extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         studentpass = new javax.swing.JPasswordField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jPanel1.setBackground(new java.awt.Color(204, 153, 0));
 
         jLabel1.setBackground(new java.awt.Color(255, 204, 0));
