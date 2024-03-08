@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Training_placement;
+import java.sql.*;
 
 /**
  *
@@ -107,6 +108,11 @@ public class StudentAddPage extends javax.swing.JFrame {
         jButton2.setForeground(new java.awt.Color(255, 255, 0));
         jButton2.setText("SAVE");
         jButton2.setPreferredSize(new java.awt.Dimension(107, 33));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setBackground(new java.awt.Color(153, 51, 0));
         jButton3.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
@@ -294,6 +300,22 @@ public class StudentAddPage extends javax.swing.JFrame {
         s.hide();
         s.setVisible(true);        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+             String  dburl="jdbc:oracle:thin@localhost:1525:xe";
+             String user="localhost";
+             String pass="system";
+             try
+             {
+                 Connection conn=DriverManager.getConnection(dburl,user,pass);
+                 System.out.println("Database is connected");
+             }
+             catch(SQLException e)
+             {
+                 System.out.println("Oracle error"+e);
+             }
+               
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
