@@ -51,6 +51,8 @@ public class StudentAddPage extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
         jPanel1.setBackground(new java.awt.Color(255, 204, 102));
         jPanel1.setForeground(new java.awt.Color(204, 51, 0));
 
@@ -94,6 +96,11 @@ public class StudentAddPage extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 0));
         jButton1.setText("UPDATE");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(153, 51, 0));
         jButton2.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
@@ -269,7 +276,9 @@ public class StudentAddPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        updstu s =new updstu();
+        s.hide();
+        s.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void femaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_femaleActionPerformed
@@ -279,6 +288,12 @@ public class StudentAddPage extends javax.swing.JFrame {
     private void maleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maleActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_maleActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        updstu s =new updstu();
+        s.hide();
+        s.setVisible(true);        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
