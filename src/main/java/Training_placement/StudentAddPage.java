@@ -343,14 +343,22 @@ public class StudentAddPage extends javax.swing.JFrame {
         String skills=stuskills.getText();
         
         try {
-            stmt=conn.prepareStatement("insert into tandpstudentdata(prn_no,stu_name,email_id,contact,gender,grade,skills)values(?,?,?,?,?,?,?)");
+            String query="insert into tandpstudentdata(prn_no,stu_name,email_id,contact,gender,grade,skills)values(?,?,?,?,?,?,?)";
+            stmt=conn.prepareStatement(query);
             stmt.setString(1,prn);
             stmt.setString(2,name);
             stmt.setString(3,gmail);
             stmt.setString(4,con);
-            stmt.setString(5,cgpa);
-            stmt.setString(6,gen);
+            stmt.setString(5,gen);
+            try {
+            float dcgpa = Float.parseFloat(cgpa);
+            stmt.setFloat(6, dcgpa);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Invalid CGPA format. Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+                return; // Exit the method if CGPA parsing fails
+            }
             stmt.setString(7,skills);
+            
             int k=stmt.executeUpdate();
             if(k==1)
             {
