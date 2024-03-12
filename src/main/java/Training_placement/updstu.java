@@ -4,6 +4,17 @@
  */
 package Training_placement;
 
+import static Training_placement.StudentAddPage.conn;
+import static Training_placement.StudentAddPage.stmt;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import Training_placement.StudentAddPage;
 /**
  *
  * @author Admin
@@ -15,6 +26,25 @@ public class updstu extends javax.swing.JFrame {
      */
     public updstu() {
         initComponents();
+        connect();
+    }
+    
+    static Connection conn1;
+    static PreparedStatement stmt1;
+    
+    
+    public static void connect() 
+    {
+             String  dburl="jdbc:oracle:thin:@//localhost:1521/xe";
+             String user="system";
+             String pass="system";
+                 try {
+                     //Class.forName("oracle.jdbc.OracleDiver");
+                     conn1=DriverManager.getConnection(dburl,user,pass);
+                 } catch (SQLException ex) {
+                     Logger.getLogger(StudentAddPage.class.getName()).log(Level.SEVERE, null, ex);
+                 }   
+        
     }
 
     /**
@@ -94,7 +124,9 @@ public class updstu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+       
+       StudentAddPage st=new StudentAddPage();
+        st.setdata();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -124,7 +156,7 @@ public class updstu extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-
+       
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
