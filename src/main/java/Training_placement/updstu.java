@@ -26,10 +26,10 @@ public class updstu extends javax.swing.JFrame {
      */
     public updstu() {
         initComponents();
-        connect();
+//        connect();
     }
     
-    static Connection conn1;
+/**    static Connection conn1;
     static PreparedStatement stmt1;
     
     
@@ -46,7 +46,7 @@ public class updstu extends javax.swing.JFrame {
                  }   
         
     }
-
+*/
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -58,7 +58,7 @@ public class updstu extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        prn = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(255, 204, 102));
@@ -90,7 +90,7 @@ public class updstu extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(72, 72, 72)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(prn, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(116, 116, 116)
                         .addComponent(jButton1)))
@@ -102,7 +102,7 @@ public class updstu extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(prn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
                 .addContainerGap(7, Short.MAX_VALUE))
@@ -125,8 +125,11 @@ public class updstu extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        
-       StudentAddPage st=new StudentAddPage();
-        st.setdata();
+        String pr=prn.getText();
+        
+        new StudentAddPage(pr).setVisible(true);
+      
+       
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -169,6 +172,6 @@ public class updstu extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField prn;
     // End of variables declaration//GEN-END:variables
 }
