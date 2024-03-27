@@ -128,10 +128,12 @@ public class updstu extends javax.swing.JFrame {
         String pr=prn.getText();
         
         new StudentAddPage(pr).setVisible(true);
+        
+        
       
        
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    
     /**
      * @param args the command line arguments
      */

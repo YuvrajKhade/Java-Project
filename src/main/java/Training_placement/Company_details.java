@@ -5,12 +5,14 @@
 package Training_placement;
 
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -450,6 +452,47 @@ public class Company_details extends javax.swing.JFrame {
             branch=ae.getText();
         }
         String skill=reqskill.getText();
+        
+        String query="insert into addcompanydetails(cmp_id,cmp_name,cmp_email,cmp_cont,cmp_hr,cutoff,branch,skills) values(?,?,?,?,?,?,?,?)";
+        try {
+            stmt=conn.prepareStatement(query);
+            
+            stmt.setString(1,id);
+            stmt.setString(2,name );
+            stmt.setString(3,email );
+            stmt.setString(4,contact );
+            stmt.setString(5,Hr );
+            try {
+            float dcgpa = Float.parseFloat(cutoff);
+            stmt.setFloat(6, dcgpa);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Invalid CGPA format. Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+                return; // Exit the method if CGPA parsing fails
+            }
+            stmt.setString(7,branch);
+            stmt.setString(8,skill );
+            int k=stmt.executeUpdate();
+            if(k==1)
+            {
+                JOptionPane.showMessageDialog(this,"Data added successfully..!!"); 
+                cmpid.setText("");
+                cmpname.setText("");
+                cmpemail.setText("");
+                cmpcont.setText("");
+                cmphr.setText("");
+                cmpcutoff.setText("");
+        
+                reqskill.setText("");
+                cmpname.requestFocus();
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(this,"Unable to load"); 
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Company_details.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }//GEN-LAST:event_jButton2ActionPerformed
 

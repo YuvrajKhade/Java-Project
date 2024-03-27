@@ -23,10 +23,11 @@ public class StudentAddPage extends javax.swing.JFrame {
     }
     
     
-    
+     private static int clickCount = 0;
     
    static Connection conn;
     static PreparedStatement stmt;
+    ResultSet rs;
     
     
     public static void connect() 
@@ -76,7 +77,7 @@ public class StudentAddPage extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         stuskills = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
+        update = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         male = new javax.swing.JRadioButton();
@@ -125,13 +126,13 @@ public class StudentAddPage extends javax.swing.JFrame {
         stuskills.setRows(5);
         jScrollPane1.setViewportView(stuskills);
 
-        jButton1.setBackground(new java.awt.Color(153, 51, 0));
-        jButton1.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 0));
-        jButton1.setText("UPDATE");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        update.setBackground(new java.awt.Color(153, 51, 0));
+        update.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        update.setForeground(new java.awt.Color(255, 255, 0));
+        update.setText("UPDATE");
+        update.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                updateActionPerformed(evt);
             }
         });
 
@@ -221,7 +222,7 @@ public class StudentAddPage extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(45, 45, 45)
-                                .addComponent(jButton1)
+                                .addComponent(update)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -286,7 +287,7 @@ public class StudentAddPage extends javax.swing.JFrame {
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
+                            .addComponent(update)
                             .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -296,9 +297,8 @@ public class StudentAddPage extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(stucgpa, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(stucgpa, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -330,11 +330,18 @@ public class StudentAddPage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_maleActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
         updstu s =new updstu();
         s.hide();
-        s.setVisible(true);        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        s.setVisible(true); 
+        clickCount++;
+   
+        if(clickCount==2)
+        {
+            update();
+            clickCount=0;
+        }
+    }//GEN-LAST:event_updateActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
              
@@ -399,7 +406,7 @@ public class StudentAddPage extends javax.swing.JFrame {
     public StudentAddPage(String msg) {
         initComponents();
         String query="select * from tandpstudentdata";
-       ResultSet rs;
+       
        int c;
        try {
             stmt=conn.prepareStatement(query);
@@ -436,7 +443,7 @@ public class StudentAddPage extends javax.swing.JFrame {
                 }
                  else
                  {
-                 JOptionPane.showMessageDialog(this,"Invalid Prn no");
+                    JOptionPane.showMessageDialog(this,"Invalid Prn no");
                     break;
                  }
                  
@@ -447,6 +454,76 @@ public class StudentAddPage extends javax.swing.JFrame {
             Logger.getLogger(updstu.class.getName()).log(Level.SEVERE, null, ex);
         }
 //        
+    }
+    void update()
+    {
+        String prn=stuprn.getText();
+        String name=stuname.getText();
+        String gmail=stugmail.getText();
+        String con=stucont.getText();
+        String cgpa=stucgpa.getText();
+        String gen="";
+        if(male.isSelected())
+        {
+            gen=male.getText();
+        }
+        else if(female.isSelected())
+        {
+            gen=female.getText();
+        }
+        String skills=stuskills.getText();
+        
+        String query="update tandpstudentdata set stu_name=?,email_id=?,contact=?,gender=?,grade=?,skills=? where prn_no=? ";
+        try{
+            int c=0;
+            stmt=conn.prepareStatement(query);
+            rs=stmt.executeQuery();
+            ResultSetMetaData rsm=rs.getMetaData();
+            c=rsm.getColumnCount(); 
+            while(rs.next())
+            {
+                for (int i = 0; i < c; i++)
+                {
+                    stmt.setString(1,prn);
+                    stmt.setString(2,name);
+                    stmt.setString(3,gmail);
+                    stmt.setString(4,con);
+                    stmt.setString(5,gen);
+                    try {
+                    float dcgpa = Float.parseFloat(cgpa);
+                    stmt.setFloat(6, dcgpa);
+                    } 
+                    catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(this, "Invalid CGPA format. Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return; // Exit the method if CGPA parsing fails
+                    }
+                    stmt.setString(7,skills);
+                }
+                
+            }  
+            
+            
+            int k=stmt.executeUpdate();
+            if(k==1)
+            {
+                JOptionPane.showMessageDialog(this,"Data Updated successfully..!!"); 
+                stuprn.setText("");
+                stuname.setText("");
+                stugmail.setText("");
+                stucont.setText("");
+                stucgpa.setText("");
+                stuskills.setText("");
+                gendergrp.clearSelection();
+                stuname.requestFocus();
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(this,"Unable to load"); 
+            }
+            
+            } catch (SQLException ex) {
+                Logger.getLogger(StudentAddPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }
     /**
      * @param args the command line arguments
@@ -486,7 +563,6 @@ public class StudentAddPage extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton female;
     private javax.swing.ButtonGroup gendergrp;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
@@ -508,5 +584,6 @@ public class StudentAddPage extends javax.swing.JFrame {
     private javax.swing.JTextField stuname;
     private javax.swing.JTextField stuprn;
     private javax.swing.JTextArea stuskills;
+    private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
 }
