@@ -4,6 +4,17 @@
  */
 package Training_placement;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Admin
@@ -15,6 +26,26 @@ public class Training extends javax.swing.JFrame {
      */
     public Training() {
         initComponents();
+        connect();
+    }
+    static Connection conn;
+    static PreparedStatement stmt;
+    ResultSet rs;
+    
+    
+    public static void connect() 
+    {
+             String  dburl="jdbc:oracle:thin:@//localhost:1521/xe";
+             String user="system";
+             String pass="system";
+                 try {
+                     //Class.forName("oracle.jdbc.OracleDiver");
+                     conn=DriverManager.getConnection(dburl,user,pass);
+                 } catch (SQLException ex) {
+                     Logger.getLogger(StudentAddPage.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+        
+        
     }
 
     /**
@@ -30,17 +61,19 @@ public class Training extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        id = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        name = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        sub = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        startdate = new com.toedter.calendar.JDateChooser();
         edit = new javax.swing.JButton();
         add1 = new javax.swing.JButton();
         add2 = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        enddate = new com.toedter.calendar.JDateChooser();
 
         jPanel1.setBackground(new java.awt.Color(204, 153, 0));
 
@@ -65,22 +98,36 @@ public class Training extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Segoe UI Historic", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(102, 102, 0));
-        jLabel7.setText("Date:");
+        jLabel7.setText("Start Date:");
 
         edit.setBackground(new java.awt.Color(204, 102, 0));
         edit.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         edit.setForeground(new java.awt.Color(255, 255, 102));
         edit.setText("Edit");
+        edit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editActionPerformed(evt);
+            }
+        });
 
         add1.setBackground(new java.awt.Color(204, 102, 0));
         add1.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         add1.setForeground(new java.awt.Color(255, 255, 102));
         add1.setText("Add");
+        add1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                add1ActionPerformed(evt);
+            }
+        });
 
         add2.setBackground(new java.awt.Color(204, 102, 0));
         add2.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         add2.setForeground(new java.awt.Color(255, 255, 102));
         add2.setText("Show");
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI Historic", 1, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(102, 102, 0));
+        jLabel8.setText("End Date:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -97,21 +144,21 @@ public class Training extends javax.swing.JFrame {
                                         .addComponent(jLabel2)
                                         .addGap(35, 35, 35))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(add1)
-                                            .addComponent(jLabel3))
+                                        .addComponent(jLabel3)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(name, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                                    .addComponent(id)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel8))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(sub, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                                    .addComponent(startdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(enddate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(6, 6, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -120,9 +167,11 @@ public class Training extends javax.swing.JFrame {
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(199, 199, 199)
+                .addGap(109, 109, 109)
+                .addComponent(add1)
+                .addGap(18, 18, 18)
                 .addComponent(edit)
-                .addGap(31, 31, 31)
+                .addGap(18, 18, 18)
                 .addComponent(add2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -135,26 +184,30 @@ public class Training extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(id, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(sub, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39)
+                    .addComponent(startdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel8)
+                    .addComponent(enddate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(add1)
                     .addComponent(edit)
-                    .addComponent(add2)
-                    .addComponent(add1))
-                .addContainerGap(16, Short.MAX_VALUE))
+                    .addComponent(add2))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -174,6 +227,50 @@ public class Training extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void add1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add1ActionPerformed
+        
+        String tid=id.getText();
+        String tname=name.getText();
+        String tsub=sub.getText();       
+        SimpleDateFormat stdt= new SimpleDateFormat("yyyy-MM-dd");
+        String tsdate=stdt.format(startdate);
+        String tedate=stdt.format(enddate);
+        
+        
+        
+        String query="insert into Training(trainig_id,trainin_name,train_sub,training_sdate,training_edate)values(?,?,?,?,?)";
+        
+        try {
+            stmt=conn.prepareStatement(query);
+            stmt.setString(1, tid);
+            stmt.setString(2,tname);
+            stmt.setString(3,tsub);
+            stmt.setObject(4,tsdate);
+            stmt.setObject(5,tedate);
+            
+            int k=stmt.executeUpdate();
+            if(k==1)
+            {
+                JOptionPane.showMessageDialog(this,"Data added successfully...");
+                id.setText("");
+                name.setText("");
+                sub.setText("");
+                startdate=null;
+                enddate=null;
+                id.requestFocus();
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Unable to add...");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Training.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_add1ActionPerformed
+
+    private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editActionPerformed
 
     /**
      * @param args the command line arguments
@@ -214,7 +311,8 @@ public class Training extends javax.swing.JFrame {
     private javax.swing.JButton add1;
     private javax.swing.JButton add2;
     private javax.swing.JButton edit;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser enddate;
+    private javax.swing.JTextField id;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -222,9 +320,10 @@ public class Training extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField name;
+    private com.toedter.calendar.JDateChooser startdate;
+    private javax.swing.JTextField sub;
     // End of variables declaration//GEN-END:variables
 }

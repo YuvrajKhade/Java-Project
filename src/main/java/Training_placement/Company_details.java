@@ -9,16 +9,19 @@ package Training_placement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-
+import javax.swing.JTextField;
 /**
  *
  * @author Admin
  */
 public class Company_details extends javax.swing.JFrame {
+private JTextField selectedBranchesTextField;
 
     /**
      * Creates new form Cmpany_details
@@ -35,7 +38,7 @@ public class Company_details extends javax.swing.JFrame {
      */
     static Connection conn;
     static PreparedStatement stmt;
-    
+    ResultSet rs;
     
     public static void connect() 
     {
@@ -82,10 +85,11 @@ public class Company_details extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         reqskill = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        update = new javax.swing.JButton();
+        save = new javax.swing.JButton();
+        fetch = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
+        remove1 = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(255, 204, 102));
         jPanel1.setForeground(new java.awt.Color(204, 51, 0));
@@ -193,34 +197,50 @@ public class Company_details extends javax.swing.JFrame {
         reqskill.setRows(5);
         jScrollPane1.setViewportView(reqskill);
 
-        jButton1.setBackground(new java.awt.Color(153, 51, 0));
-        jButton1.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 0));
-        jButton1.setText("UPDATE");
-
-        jButton2.setBackground(new java.awt.Color(153, 51, 0));
-        jButton2.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 0));
-        jButton2.setText("SAVE");
-        jButton2.setPreferredSize(new java.awt.Dimension(107, 33));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        update.setBackground(new java.awt.Color(153, 51, 0));
+        update.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        update.setForeground(new java.awt.Color(255, 255, 0));
+        update.setText("UPDATE");
+        update.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                updateActionPerformed(evt);
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(153, 51, 0));
-        jButton3.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 0));
-        jButton3.setText("LOGIN");
-        jButton3.setPreferredSize(new java.awt.Dimension(107, 33));
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        save.setBackground(new java.awt.Color(153, 51, 0));
+        save.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        save.setForeground(new java.awt.Color(255, 255, 0));
+        save.setText("SAVE");
+        save.setPreferredSize(new java.awt.Dimension(107, 33));
+        save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                saveActionPerformed(evt);
+            }
+        });
+
+        fetch.setBackground(new java.awt.Color(153, 51, 0));
+        fetch.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        fetch.setForeground(new java.awt.Color(255, 255, 0));
+        fetch.setText("Fetch");
+        fetch.setPreferredSize(new java.awt.Dimension(107, 33));
+        fetch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fetchActionPerformed(evt);
             }
         });
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/company-removebg-preview.png"))); // NOI18N
+
+        remove1.setBackground(new java.awt.Color(153, 51, 0));
+        remove1.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        remove1.setForeground(new java.awt.Color(255, 255, 0));
+        remove1.setText("Remove");
+        remove1.setPreferredSize(new java.awt.Dimension(107, 33));
+        remove1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                remove1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -269,16 +289,18 @@ public class Company_details extends javax.swing.JFrame {
                                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(92, 92, 92)
-                        .addComponent(jButton1)
-                        .addGap(107, 107, 107)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(cmpcutoff, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(119, 119, 119)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmpcutoff, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(71, 71, 71)
+                                .addComponent(update)))
+                        .addGap(29, 29, 29)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(fetch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(save, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(28, 28, 28)
+                        .addComponent(remove1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
@@ -342,11 +364,12 @@ public class Company_details extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cmpcutoff, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(save, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(update)
+                            .addComponent(fetch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(remove1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -407,53 +430,137 @@ public class Company_details extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_eeActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void fetchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fetchActionPerformed
+        String query1="Select * from companydetails";
+        try {
+            stmt=conn.prepareStatement(query1);
+            rs=stmt.executeQuery();
+            boolean flag=false;
+            while(rs.next())
+            {
+                String cmpid1=rs.getString("cmp_id");
+                if(cmpid.getText().equals(cmpid1))
+                {
+                    cmpname.setText(rs.getString("cmp_name"));
+                    cmpemail.setText(rs.getString("cmp_email"));
+                    cmpcont.setText(rs.getString("cmp_cont"));
+                    cmphr.setText(rs.getString("cmp_hr"));
+                    cmpcutoff.setText(rs.getString("cutoff"));
+                    
+                    String splitbranch = rs.getString("branch");
+                String[] branches = splitbranch.split(",");
+                
+                // Create an ArrayList to store selected branches
+                
+                cse.setSelected(false);
+                ce.setSelected(false);
+                ae.setSelected(false);
+                entc.setSelected(false);
+                me.setSelected(false);
+                aiml.setSelected(false);
+                aids.setSelected(false);
+                
+                for (String branch : branches) {
+                    
+                        if(branch.equals("Computer Engineering"))
+                            cse.setSelected(true);
+                            
+                            
+                        else if(branch.equals("Civil Engineering"))
+                            ce.setSelected(true);
+                            
+                            
+                        else if(branch.equals("Automobile Engineering"))
+                            ae.setSelected(true);
+                            
+                            
+                        else if(branch.equals("ENTC Engineering"))
+                            entc.setSelected(true);
+                            
+                        else if(branch.equals("Mechanical Engineering"))
+                            me.setSelected(true);
+                            
+                        else if(branch.equals("AI/ML Engineering"))
+                            aiml.setSelected(true);
+                            
+                            
+                        else if(branch.equals("AI/DS Engineering"))
+                            aids.setSelected(true);
+                            
+                            
+                        else if(branch.equals("Electrical Engineering"))
+                            aids.setSelected(true);
+                            
+                            
+                        else if(branch.equals("IT Engineering"))
+                            aids.setSelected(true);
+                            
+                   
+                }
+                
+            
+                reqskill.setText(rs.getString("skills"));
+                cmpcutoff.setText(rs.getString("cutoff"));
+                flag = true;
+                break;
+                }
+            }
+            if(!flag)
+            {
+                JOptionPane.showMessageDialog(this, "Does'nt exists..");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Company_details.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_fetchActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         String name=cmpname.getText();
         String id=cmpid.getText();
         String email=cmpemail.getText();
         String contact=cmpcont.getText();
         String Hr=cmphr.getText();
         String cutoff=cmpcutoff.getText();
-        String branch="";
-        if(cse.isSelected())
+        String branch=" ";
+        if(cse.isSelected()==true)
         {
-            branch=cse.getText();
+            branch="Computer Engineering , ";
         }
-        else if(ce.isSelected())
+        if(ce.isSelected()==true)
         {
-            branch=ce.getText();
+            branch+="Civil Engineering , ";
         }
-        else if(entc.isSelected())
+        if(entc.isSelected()==true)
         {
-            branch=entc.getText();
+            branch+="ENTC Engineering , ";
         }
-        else if(me.isSelected())
+        if(me.isSelected()==true)
         {
-            branch=me.getText();
+            branch+="Mechanical Engineering , ";
         }
-        else if(ee.isSelected())
+        if(ee.isSelected()==true)
         {
-            branch=ee.getText();
+            branch+="Electrical Engineering , ";
         }
-        else if(aiml.isSelected())
+        if(aiml.isSelected()==true)
         {
-            branch=aiml.getText();
+            branch+="AI/ML Engineering , ";
         }
-        else if(aids.isSelected())
+        if(aids.isSelected()==true)
         {
-            branch=aids.getText();
+            branch+="AI/DS Engineering , ";
         }
-        else if(ae.isSelected())
+        if(ae.isSelected()==true)
         {
-            branch=ae.getText();
+            branch+="Automobile Engineering , ";
+        }
+        if(it.isSelected()==true)
+        {
+            branch+="IT Engineering";
         }
         String skill=reqskill.getText();
         
-        String query="insert into addcompanydetails(cmp_id,cmp_name,cmp_email,cmp_cont,cmp_hr,cutoff,branch,skills) values(?,?,?,?,?,?,?,?)";
+        String query="insert into companydetails(cmp_id,cmp_name,cmp_email,cmp_cont,cmp_hr,cutoff,branch,skills) values(?,?,?,?,?,?,?,?)";
         try {
             stmt=conn.prepareStatement(query);
             
@@ -481,9 +588,17 @@ public class Company_details extends javax.swing.JFrame {
                 cmpcont.setText("");
                 cmphr.setText("");
                 cmpcutoff.setText("");
-        
+                cse.setSelected(false);
+                ce.setSelected(false);
+                ee.setSelected(false);
+                me.setSelected(false);
+                ae.setSelected(false);
+                aids.setSelected(false);
+                aiml.setSelected(false);
+                entc.setSelected(false);
+                it.setSelected(false);
                 reqskill.setText("");
-                cmpname.requestFocus();
+                cmpid.requestFocus();
             }
             else
             {
@@ -494,7 +609,95 @@ public class Company_details extends javax.swing.JFrame {
             Logger.getLogger(Company_details.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-    }//GEN-LAST:event_jButton2ActionPerformed
+        
+    }//GEN-LAST:event_saveActionPerformed
+
+    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+        
+        String query="Update companydetails set cmp_name=?,cmp_email=?,cmp_cont=?,cmp_hr=?,cutoff=?,branch=?,skills=? where cmp_id=?";
+    try {
+            stmt=conn.prepareStatement(query);
+            stmt.setString(1, cmpname.getText());
+            stmt.setString(2,cmpemail.getText());
+            stmt.setString(3, cmpcont.getText());
+            stmt.setString(4,cmphr.getText());
+            stmt.setString(5, cmpcutoff.getText());
+            String branch=" ";
+            if(cse.isSelected()==true)
+            {
+                branch="Computer Engineering , ";
+            }
+            if(ce.isSelected()==true)
+            {
+                branch+="Civil Engineering , ";
+            }
+            if(entc.isSelected()==true)
+            {
+                branch+="ENTC Engineering , ";
+            }
+            if(me.isSelected()==true)
+            {
+                branch+="Mechanical Engineering , ";
+            }
+            if(ee.isSelected()==true)
+            {
+                branch+="Electrical Engineering , ";
+            }
+            if(aiml.isSelected()==true)
+            {
+                branch+="AI/ML Engineering , ";
+            }
+            if(aids.isSelected()==true)
+            {
+                branch+="AI/DS Engineering , ";
+            }
+            if(ae.isSelected()==true)
+            {
+                branch+="Automobile Engineering , ";
+            }
+            if(it.isSelected()==true)
+            {
+                branch+="IT Engineering";
+            }
+            stmt.setString(6, branch);
+            stmt.setString(7,reqskill.getText() );
+            stmt.setString(8, cmpid.getText());
+            int k=stmt.executeUpdate();
+             if(k==1)
+             {
+                 JOptionPane.showMessageDialog(this, "Data updated succesfully");
+             }
+             else
+             {
+                 JOptionPane.showMessageDialog(this, "Unbale to load the data");
+             }
+        
+        
+        
+    } catch (SQLException ex) {
+        Logger.getLogger(Company_details.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    }//GEN-LAST:event_updateActionPerformed
+
+    private void remove1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remove1ActionPerformed
+       String query = "DELETE FROM companydetails WHERE cmp_id=?";
+        try {
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1, cmpid.getText()); 
+
+            int k = stmt.executeUpdate();
+            if (k == 1) {
+                JOptionPane.showMessageDialog(this, "Data deleted successfully");
+            } else {
+                JOptionPane.showMessageDialog(this, "No records found with the given ID");
+            }
+
+            stmt.close(); 
+        } catch (SQLException ex) {
+            Logger.getLogger(Company_details.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_remove1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -546,10 +749,8 @@ public class Company_details extends javax.swing.JFrame {
     private javax.swing.JCheckBox cse;
     private javax.swing.JCheckBox ee;
     private javax.swing.JCheckBox entc;
+    private javax.swing.JButton fetch;
     private javax.swing.JCheckBox it;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
@@ -563,6 +764,9 @@ public class Company_details extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JCheckBox me;
+    private javax.swing.JButton remove1;
     private javax.swing.JTextArea reqskill;
+    private javax.swing.JButton save;
+    private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
 }

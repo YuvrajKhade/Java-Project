@@ -4,6 +4,8 @@
  */
 package Training_placement;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Admin
@@ -152,7 +154,22 @@ public class Student_loginpage extends javax.swing.JFrame {
     }//GEN-LAST:event_studentuserActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        String stuuser=studentuser.getText();
+        String stupass=studentpass.getText();
+        if(stuuser.equals("Amey Jadhav") && stupass.equals("123amey"))
+        {
+            Student_page stp=new Student_page();
+            stp.hide();
+            stp.setVisible(true);
+        }
+         else
+        {
+            JOptionPane.showMessageDialog(this,"User name and password are Invalid");
+            studentuser.setText("");
+            studentpass.setText("");
+            studentuser.requestFocus();
+            
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
