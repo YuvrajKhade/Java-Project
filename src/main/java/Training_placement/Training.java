@@ -5,12 +5,10 @@
 package Training_placement;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -68,12 +66,12 @@ public class Training extends javax.swing.JFrame {
         sub = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        startdate = new com.toedter.calendar.JDateChooser();
-        edit = new javax.swing.JButton();
+        fetch = new javax.swing.JButton();
         add1 = new javax.swing.JButton();
-        add2 = new javax.swing.JButton();
+        edit = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        enddate = new com.toedter.calendar.JDateChooser();
+        startdate = new javax.swing.JTextField();
+        enddate = new javax.swing.JTextField();
 
         jPanel1.setBackground(new java.awt.Color(204, 153, 0));
 
@@ -100,13 +98,13 @@ public class Training extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(102, 102, 0));
         jLabel7.setText("Start Date:");
 
-        edit.setBackground(new java.awt.Color(204, 102, 0));
-        edit.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        edit.setForeground(new java.awt.Color(255, 255, 102));
-        edit.setText("Edit");
-        edit.addActionListener(new java.awt.event.ActionListener() {
+        fetch.setBackground(new java.awt.Color(204, 102, 0));
+        fetch.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        fetch.setForeground(new java.awt.Color(255, 255, 102));
+        fetch.setText("Fetch");
+        fetch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editActionPerformed(evt);
+                fetchActionPerformed(evt);
             }
         });
 
@@ -120,10 +118,15 @@ public class Training extends javax.swing.JFrame {
             }
         });
 
-        add2.setBackground(new java.awt.Color(204, 102, 0));
-        add2.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        add2.setForeground(new java.awt.Color(255, 255, 102));
-        add2.setText("Show");
+        edit.setBackground(new java.awt.Color(204, 102, 0));
+        edit.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        edit.setForeground(new java.awt.Color(255, 255, 102));
+        edit.setText("Edit");
+        edit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editActionPerformed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Segoe UI Historic", 1, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(102, 102, 0));
@@ -157,8 +160,8 @@ public class Training extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(sub, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-                                    .addComponent(startdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(enddate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(startdate)
+                                    .addComponent(enddate))))
                         .addGap(6, 6, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -170,9 +173,9 @@ public class Training extends javax.swing.JFrame {
                 .addGap(109, 109, 109)
                 .addComponent(add1)
                 .addGap(18, 18, 18)
-                .addComponent(edit)
+                .addComponent(fetch)
                 .addGap(18, 18, 18)
-                .addComponent(add2)
+                .addComponent(edit)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -195,18 +198,18 @@ public class Training extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(sub, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(startdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(enddate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(add1)
-                    .addComponent(edit)
-                    .addComponent(add2))
+                    .addComponent(fetch)
+                    .addComponent(edit))
                 .addContainerGap())
         );
 
@@ -230,46 +233,102 @@ public class Training extends javax.swing.JFrame {
 
     private void add1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add1ActionPerformed
         
-        String tid=id.getText();
-        String tname=name.getText();
-        String tsub=sub.getText();       
-        SimpleDateFormat stdt= new SimpleDateFormat("yyyy-MM-dd");
-        String tsdate=stdt.format(startdate);
-        String tedate=stdt.format(enddate);
+        String tid = id.getText();
+        String tname = name.getText();
+        String tsub = sub.getText();       
+
+        String tsdate=startdate.getText();
+        String tedate=enddate.getText();
+
+        // Get the selected date from startdate and enddate JDateChooser objects
         
-        
-        
-        String query="insert into Training(trainig_id,trainin_name,train_sub,training_sdate,training_edate)values(?,?,?,?,?)";
-        
+
+        String query = "INSERT INTO Training (training_id, training_name, train_sub, training_sdate, training_edate) VALUES (?, ?, ?, ?, ?)";
+
         try {
-            stmt=conn.prepareStatement(query);
+            stmt = conn.prepareStatement(query);
             stmt.setString(1, tid);
-            stmt.setString(2,tname);
-            stmt.setString(3,tsub);
-            stmt.setObject(4,tsdate);
-            stmt.setObject(5,tedate);
-            
-            int k=stmt.executeUpdate();
-            if(k==1)
-            {
-                JOptionPane.showMessageDialog(this,"Data added successfully...");
+            stmt.setString(2, tname);
+            stmt.setString(3, tsub);
+            stmt.setString(4, tsdate);
+            stmt.setString(5, tedate);
+
+            int k = stmt.executeUpdate();
+            if (k == 1) {
+                JOptionPane.showMessageDialog(this, "Data added successfully...");
                 id.setText("");
                 name.setText("");
                 sub.setText("");
-                startdate=null;
-                enddate=null;
+                startdate.setText(""); // Set the JDateChooser to null to clear its value
+                enddate.setText("");   // Set the JDateChooser to null to clear its value
                 id.requestFocus();
-            }
-            else{
+            } else {
                 JOptionPane.showMessageDialog(this, "Unable to add...");
             }
         } catch (SQLException ex) {
             Logger.getLogger(Training.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }//GEN-LAST:event_add1ActionPerformed
 
+    private void fetchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fetchActionPerformed
+        String query="Select * from training";
+        try {
+            stmt=conn.prepareStatement(query);
+            rs=stmt.executeQuery(query);
+            while(rs.next())
+            {
+                String id1= id.getText();
+                if((rs.getString("training_id")).equals(id1)){
+                    name.setText(rs.getString("training_name"));
+                    sub.setText(rs.getString("train_sub"));
+                    startdate.setText(rs.getString("training_sdate"));
+                    enddate.setText(rs.getString("training_edate"));
+                }
+                else{
+                    JOptionPane.showMessageDialog(this,"Invalid id..");
+                    break;
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Training.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_fetchActionPerformed
+
     private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
-        // TODO add your handling code here:
+        String query1="Select * from training";
+        
+        String query="update training set training_name=?,train_sub=?,training_sdate=?,training_edate=? where training_id=?";
+        try {
+            stmt=conn.prepareStatement(query1);
+            rs=stmt.executeQuery(query1);
+            while(rs.next()){
+                if((rs.getString("training_id").equals(id.getText()))){
+                    stmt=conn.prepareStatement(query);
+                    stmt.setString(1, name.getText());
+                    stmt.setString(2, sub.getText());
+                    stmt.setString(3,startdate.getText());
+                    stmt.setString(4,enddate.getText());
+                    stmt.setString(5, id.getText());
+                    int k=stmt.executeUpdate();
+                    if(k==1){
+                        JOptionPane.showMessageDialog(this, "Data Updated successfully");
+                    }else{
+                        JOptionPane.showMessageDialog(this, "Unable to update data..");
+                        break;
+                    }
+                        
+                        
+                }
+                
+            }
+                
+        } catch (SQLException ex) {
+            Logger.getLogger(Training.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_editActionPerformed
 
     /**
@@ -309,9 +368,9 @@ public class Training extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add1;
-    private javax.swing.JButton add2;
     private javax.swing.JButton edit;
-    private com.toedter.calendar.JDateChooser enddate;
+    private javax.swing.JTextField enddate;
+    private javax.swing.JButton fetch;
     private javax.swing.JTextField id;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
@@ -323,7 +382,7 @@ public class Training extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField name;
-    private com.toedter.calendar.JDateChooser startdate;
+    private javax.swing.JTextField startdate;
     private javax.swing.JTextField sub;
     // End of variables declaration//GEN-END:variables
 }
