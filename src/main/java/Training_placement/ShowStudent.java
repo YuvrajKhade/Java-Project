@@ -203,15 +203,15 @@ public class ShowStudent extends javax.swing.JFrame {
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
         Admin_page ap=new Admin_page();
-        ap.setVisible(true);
         ap.hide();
+        ap.setVisible(true);
         
     }//GEN-LAST:event_backActionPerformed
 
     private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
         StudentUpdatePage stp=new StudentUpdatePage();
-        stp.setVisible(true);
         stp.hide();
+        stp.setVisible(true);
     }//GEN-LAST:event_editActionPerformed
 
     /**
