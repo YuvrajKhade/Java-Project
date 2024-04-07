@@ -4,6 +4,7 @@
  */
 package Training_placement;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,30 +14,26 @@ import java.sql.SQLException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-//import javax.swing.JTable;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Admin
  */
-public class showCmptoStu extends javax.swing.JFrame  {
+public class selectedStudent extends javax.swing.JFrame {
 
     /**
-     * Creates new form showCmptoStu
+     * Creates new form selectedStudent
      */
-    public showCmptoStu() {
-        initComponents();
-        connect();
-        Table();
-        
-    }
     static Connection conn;
     static PreparedStatement stmt;
     ResultSet rs;
-    
-        
-    
+    int flag;
+    public selectedStudent() {
+        initComponents();
+        //connect();
+    }
     public static void connect() 
     {
              String  dburl="jdbc:oracle:thin:@//localhost:1521/xe";
@@ -51,39 +48,74 @@ public class showCmptoStu extends javax.swing.JFrame  {
         
         
     }
-    void Table()
+    public selectedStudent(String name)
     {
+        initComponents();
+        connect(); 
         int c;
-        String sql="Select cmp_id,cmp_name,cmp_email,cmp_cont,cmp_hr,branch,skills from companydetails";
+        String query="select s.prn_no,s.stu_name,s.email_id,s.contact,s.gender,s.grade,s.branch,c.cmp_id,c.cmp_name from tandpstudentdata s inner join companydetails c on s.cmp_id=c.cmp_id where s.grade>=c.cutoff";
+        boolean found=false;
         try {
-            stmt=conn.prepareStatement(sql);
+            stmt=conn.prepareStatement(query);
             rs=stmt.executeQuery();
             ResultSetMetaData rsd=rs.getMetaData();
             c=rsd.getColumnCount();
-            DefaultTableModel d=(DefaultTableModel)cmplist.getModel();
+            DefaultTableModel d=(DefaultTableModel)selected.getModel();
             d.setRowCount(0);
             
-            while(rs.next())
-            {
-                Vector v=new Vector();
-                for(int i=0;i<c;i++)
+                while(rs.next())
                 {
-                    v.add(rs.getString("cmp_id"));
-                    v.add(rs.getString("cmp_name"));
-                    v.add(rs.getString("cmp_email"));
-                    v.add(rs.getString("cmp_cont"));
-                    v.add(rs.getString("cmp_hr"));
-                    v.add(rs.getString("branch"));
-                    v.add(rs.getString("skills"));
+                    System.out.println(rs.getString("prn_no"));
+                    if(name.equalsIgnoreCase(rs.getString("prn_no")) || name.equalsIgnoreCase(rs.getString("cmp_id"))){
+                    String prn=rs.getString("prn_no");
                     
-                    
+                    String sname=rs.getString("stu_name");
+                
+                    String email=rs.getString("email_id");
+                    String cont=rs.getString("contact");
+                    String gen=rs.getString("gender");
+                    float grd=rs.getFloat("grade");
+                    String brnch=rs.getString("branch");
+                    String cmp=rs.getString("cmp_id");
+                    String cname=rs.getString("cmp_name");
+
+                        flag=1;
+                        found=true;
+                        Vector v=new Vector();
+                        for(int i=0;i<c;i++)
+                        {
+                            v.add(prn);
+                            v.add(sname);
+                            v.add(email);
+                            v.add(cont);
+                            v.add(gen);
+                            v.add(grd);
+                            v.add(brnch);
+                            v.add(cmp);
+                            v.add(cname);
+
+                        }  
+                        d.addRow(v);
+                    }
                 }
-                d.addRow(v);
+            
+            if(flag==0)
+                {
+                    JOptionPane.showMessageDialog(this, "Invalid user...");
+                }
+            if(!found)
+            {
+                JOptionPane.showMessageDialog(this, "Exception...");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ShowStudent.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(selectedStudent.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
+    
+    
+    
+            
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -94,41 +126,11 @@ public class showCmptoStu extends javax.swing.JFrame  {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        cmplist = new javax.swing.JTable();
+        selected = new javax.swing.JTable();
         apply = new javax.swing.JButton();
-
-        jTable.setBackground(new java.awt.Color(255, 204, 51));
-        jTable.setForeground(new java.awt.Color(204, 0, 0));
-        jTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", " Name", " Email", "Contact", "HR", "CutOff", "Branch"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable.setGridColor(new java.awt.Color(255, 51, 51));
-        jScrollPane1.setViewportView(jTable);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -138,22 +140,22 @@ public class showCmptoStu extends javax.swing.JFrame  {
         jLabel1.setForeground(new java.awt.Color(0, 102, 102));
         jLabel1.setText("Company List");
 
-        cmplist.setBackground(new java.awt.Color(0, 153, 0));
-        cmplist.setFont(new java.awt.Font("Sylfaen", 1, 18)); // NOI18N
-        cmplist.setForeground(new java.awt.Color(255, 204, 0));
-        cmplist.setModel(new javax.swing.table.DefaultTableModel(
+        selected.setBackground(new java.awt.Color(0, 153, 0));
+        selected.setFont(new java.awt.Font("Sylfaen", 1, 18)); // NOI18N
+        selected.setForeground(new java.awt.Color(255, 204, 0));
+        selected.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", " Name", " Email", "Contact", "HR", "Branch", "Skills"
+                "Student Prn", " Name", " Email", "Contact", "Gender", "Grade", "Branch", "Company id", "Company name"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true
+                false, false, false, false, false, false, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -164,9 +166,9 @@ public class showCmptoStu extends javax.swing.JFrame  {
                 return canEdit [columnIndex];
             }
         });
-        cmplist.setGridColor(new java.awt.Color(0, 204, 204));
-        cmplist.setRowHeight(40);
-        jScrollPane2.setViewportView(cmplist);
+        selected.setGridColor(new java.awt.Color(0, 204, 204));
+        selected.setRowHeight(40);
+        jScrollPane2.setViewportView(selected);
 
         apply.setBackground(new java.awt.Color(102, 0, 102));
         apply.setFont(new java.awt.Font("Verdana", 1, 24)); // NOI18N
@@ -204,7 +206,7 @@ public class showCmptoStu extends javax.swing.JFrame  {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(apply)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -224,9 +226,7 @@ public class showCmptoStu extends javax.swing.JFrame  {
     }// </editor-fold>//GEN-END:initComponents
 
     private void applyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyActionPerformed
-        applytocmp apt=new applytocmp();
-        apt.hide();
-        apt.setVisible(true);
+        
     }//GEN-LAST:event_applyActionPerformed
 
     /**
@@ -246,31 +246,29 @@ public class showCmptoStu extends javax.swing.JFrame  {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(showCmptoStu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(selectedStudent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(showCmptoStu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(selectedStudent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(showCmptoStu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(selectedStudent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(showCmptoStu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(selectedStudent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new showCmptoStu().setVisible(true);
+                new selectedStudent().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton apply;
-    private javax.swing.JTable cmplist;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable;
+    private javax.swing.JTable selected;
     // End of variables declaration//GEN-END:variables
 }
