@@ -156,7 +156,7 @@ public class Student_loginpage extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String stuuser=studentuser.getText();
         String stupass=studentpass.getText();
-        if(stuuser.equals("Amey Jadhav") && stupass.equals("123amey"))
+        if(stuuser.equalsIgnoreCase("123B2B315") && stupass.equalsIgnoreCase("123amey"))
         {
             Student_page stp=new Student_page();
             stp.hide();

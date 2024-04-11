@@ -106,6 +106,7 @@ public class ShowStudent extends javax.swing.JFrame {
         jLabel1.setText("Student Data");
 
         jTable.setBackground(new java.awt.Color(255, 204, 51));
+        jTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTable.setForeground(new java.awt.Color(204, 0, 0));
         jTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -131,6 +132,7 @@ public class ShowStudent extends javax.swing.JFrame {
             }
         });
         jTable.setGridColor(new java.awt.Color(255, 51, 51));
+        jTable.setRowHeight(40);
         jScrollPane1.setViewportView(jTable);
 
         back.setBackground(new java.awt.Color(255, 102, 0));

@@ -20,20 +20,20 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Admin
  */
-public class ShowCompany extends javax.swing.JFrame {
+public class ShowCompanyS extends javax.swing.JFrame {
 
     /**
-     * Creates new form ShowCompany
+     * Creates new form ShowCompanyS
      */
-    static Connection conn;
-    static PreparedStatement stmt;
-    ResultSet rs;
-    public ShowCompany() {
+    public ShowCompanyS() {
         initComponents();
         connect();
         Table();
     }
-    public static void connect() 
+    static Connection conn;
+    static PreparedStatement stmt;
+    ResultSet rs;
+     public static void connect() 
     {
              String  dburl="jdbc:oracle:thin:@//localhost:1521/xe";
              String user="system";
@@ -50,13 +50,13 @@ public class ShowCompany extends javax.swing.JFrame {
     void Table()
     {
         int c;
-        String sql="Select cmp_id,cmp_name,cmp_email,cmp_cont,cmp_hr,cutoff,branch,skills from companydetails";
+        String sql1="Select cmp_id,cmp_name,cmp_email,cmp_cont,cmp_hr,cutoff,branch,skills from companydetails";
         try {
-            stmt=conn.prepareStatement(sql);
+            stmt=conn.prepareStatement(sql1);
             rs=stmt.executeQuery();
             ResultSetMetaData rsd=rs.getMetaData();
             c=rsd.getColumnCount();
-            DefaultTableModel d=(DefaultTableModel)jTable.getModel();
+            DefaultTableModel d=(DefaultTableModel)scompany.getModel();
             d.setRowCount(0);
             
             while(rs.next())
@@ -93,9 +93,7 @@ public class ShowCompany extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable = new javax.swing.JTable();
-        back = new javax.swing.JButton();
-        edit = new javax.swing.JButton();
+        scompany = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -103,12 +101,12 @@ public class ShowCompany extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tw Cen MT Condensed", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 102, 0));
-        jLabel1.setText("Company Data");
+        jLabel1.setText("Companies");
 
-        jTable.setBackground(new java.awt.Color(255, 204, 51));
-        jTable.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jTable.setForeground(new java.awt.Color(204, 0, 0));
-        jTable.setModel(new javax.swing.table.DefaultTableModel(
+        scompany.setBackground(new java.awt.Color(255, 204, 51));
+        scompany.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        scompany.setForeground(new java.awt.Color(204, 0, 0));
+        scompany.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -131,29 +129,9 @@ public class ShowCompany extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable.setGridColor(new java.awt.Color(255, 51, 51));
-        jTable.setRowHeight(40);
-        jScrollPane1.setViewportView(jTable);
-
-        back.setBackground(new java.awt.Color(255, 102, 0));
-        back.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
-        back.setForeground(new java.awt.Color(204, 0, 0));
-        back.setText("BACK");
-        back.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backActionPerformed(evt);
-            }
-        });
-
-        edit.setBackground(new java.awt.Color(255, 102, 0));
-        edit.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
-        edit.setForeground(new java.awt.Color(204, 0, 0));
-        edit.setText("EDIT");
-        edit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editActionPerformed(evt);
-            }
-        });
+        scompany.setGridColor(new java.awt.Color(255, 51, 51));
+        scompany.setRowHeight(40);
+        jScrollPane1.setViewportView(scompany);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -162,17 +140,11 @@ public class ShowCompany extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(11, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(edit, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(128, 128, 128)
-                .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(184, 184, 184))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(219, 219, 219))
+                .addGap(261, 261, 261))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,12 +152,8 @@ public class ShowCompany extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(edit, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                .addGap(10, 10, 10))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -202,19 +170,6 @@ public class ShowCompany extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-        Admin_page ap=new Admin_page();
-        ap.hide();
-        ap.setVisible(true);
-
-    }//GEN-LAST:event_backActionPerformed
-
-    private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
-        Company_details cmd=new Company_details();
-        cmd.hide();
-        cmd.setVisible(true);
-    }//GEN-LAST:event_editActionPerformed
 
     /**
      * @param args the command line arguments
@@ -233,30 +188,28 @@ public class ShowCompany extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ShowCompany.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ShowCompanyS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ShowCompany.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ShowCompanyS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ShowCompany.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ShowCompanyS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ShowCompany.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ShowCompanyS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ShowCompany().setVisible(true);
+                new ShowCompanyS().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton back;
-    private javax.swing.JButton edit;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable;
+    private javax.swing.JTable scompany;
     // End of variables declaration//GEN-END:variables
 }

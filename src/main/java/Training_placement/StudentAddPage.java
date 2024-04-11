@@ -53,10 +53,7 @@ public class StudentAddPage extends javax.swing.JFrame {
      */
     
     @SuppressWarnings("unchecked")
-    public void setdata()
-    {
-        
-    }
+    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -348,63 +345,59 @@ public class StudentAddPage extends javax.swing.JFrame {
         String cmp=cmpid.getText();
         
         try {
-            String query="insert into tandpstudentdata(prn_no,stu_name,email_id,contact,gender,grade,skills,branch,cmp_id)values(?,?,?,?,?,?,?,?,?)";
-            stmt=conn.prepareStatement(query);
-            stmt.setString(1,prn);
-            stmt.setString(2,name);
-            stmt.setString(3,gmail);
-            stmt.setString(4,con);
-            stmt.setString(5,gen);
-            try {
-            float dcgpa = Float.parseFloat(cgpa);
-            stmt.setFloat(6, dcgpa);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Invalid CGPA format. Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
-                return; // Exit the method if CGPA parsing fails
-            }
-            stmt.setString(7,skills);
-            stmt.setString(8,branch);
-            stmt.setString(9,cmp);
-            
-            String query2="Select * from tandpstudentdata";
-            rs=stmt.executeQuery(query2);
-            while(rs.next())
-            {
-                if(rs.getString("prn_no").equals(prn))
-                {
-                    JOptionPane.showMessageDialog(this,"User is already exist");
-                    break;
-                }
-                else
-                {
-                    int k=stmt.executeUpdate();
-                    if(k==1)
-                    {
-                        JOptionPane.showMessageDialog(this,"Data added successfully..!!"); 
-                        stuprn.setText("");
-                        stuname.setText("");
-                        stugmail.setText("");
-                        stucont.setText("");
-                        stucgpa.setText("");
-                        stuskills.setText("");
-                        gendergrp.clearSelection();
-                        stuprn.requestFocus();
-                    }
-                    else
-                    {
-                        JOptionPane.showMessageDialog(this,"Unable to load"); 
-                    }
-                    
-                }
-            }
-            
-            
-            
-          
-        } catch (SQLException ex) {
-            Logger.getLogger(StudentAddPage.class.getName()).log(Level.SEVERE, null, ex);
+    String query2 = "Select * from tandpstudentdata";
+    stmt = conn.prepareStatement(query2);
+    rs = stmt.executeQuery(); // Execute the query to check if the user already exists
+    boolean found = false;
+    while (rs.next()) {
+        if (rs.getString("prn_no").equals(prn)) {
+            JOptionPane.showMessageDialog(this,"User is already exist");
+            found = true;
+            break;
         }
-               
+    }
+
+    if (!found) {
+        String query = "insert into tandpstudentdata(prn_no,stu_name,email_id,contact,gender,grade,skills,branch,cmp_id)values(?,?,?,?,?,?,?,?,?)";
+        PreparedStatement insertStmt = conn.prepareStatement(query);
+        insertStmt.setString(1, prn);
+        insertStmt.setString(2, name);
+        insertStmt.setString(3, gmail);
+        insertStmt.setString(4, con);
+        insertStmt.setString(5, gen);
+        try {
+            float dcgpa = Float.parseFloat(cgpa);
+            insertStmt.setFloat(6, dcgpa);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid CGPA format. Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+            return; // Exit the method if CGPA parsing fails
+        }
+        insertStmt.setString(7, skills);
+        insertStmt.setString(8, branch);
+        insertStmt.setString(9, cmp);
+
+        int k = insertStmt.executeUpdate();
+        if (k == 1) {
+            JOptionPane.showMessageDialog(this, "Data added successfully..!!");
+            // Clear input fields and reset focus
+            stuprn.setText("");
+            stuname.setText("");
+            stugmail.setText("");
+            stucont.setText("");
+            stucgpa.setText("");
+            stuskills.setText("");
+            gendergrp.clearSelection();
+            stuprn.requestFocus();
+        } else {
+            JOptionPane.showMessageDialog(this, "Unable to load");
+        }
+        insertStmt.close(); // Close the PreparedStatement after execution
+    }
+
+} catch (SQLException ex) {
+    Logger.getLogger(StudentAddPage.class.getName()).log(Level.SEVERE, null, ex);
+}
+    
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void BranchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BranchActionPerformed

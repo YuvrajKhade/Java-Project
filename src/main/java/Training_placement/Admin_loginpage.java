@@ -151,12 +151,19 @@ public class Admin_loginpage extends javax.swing.JFrame {
     }//GEN-LAST:event_adminuserActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        
+        if(adminuser.getText().equalsIgnoreCase("admin") && adminpass.getText().equalsIgnoreCase("admin")){
+            Admin_page ap=new Admin_page();
+            ap.hide();
+            ap.setVisible(true);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        setVisible(false);
+        adminuser.setText("");
+        adminpass.setText("");
+        adminuser.requestFocus();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

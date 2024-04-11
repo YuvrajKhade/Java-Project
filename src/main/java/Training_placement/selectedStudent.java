@@ -5,15 +5,26 @@
 package Training_placement;
 
 
+
+import javax.mail.PasswordAuthentication;
+import javax.mail.Authenticator;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.MimeMessage;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -30,10 +41,10 @@ public class selectedStudent extends javax.swing.JFrame {
     static PreparedStatement stmt;
     ResultSet rs;
     int flag;
-    public selectedStudent() {
-        initComponents();
-        //connect();
-    }
+//    public selectedStudent() {
+//        initComponents();
+//        //connect();
+//    }
     public static void connect() 
     {
              String  dburl="jdbc:oracle:thin:@//localhost:1521/xe";
@@ -48,71 +59,97 @@ public class selectedStudent extends javax.swing.JFrame {
         
         
     }
-    public selectedStudent(String name)
-    {
-        initComponents();
-        connect(); 
-        int c;
-        String query="select s.prn_no,s.stu_name,s.email_id,s.contact,s.gender,s.grade,s.branch,c.cmp_id,c.cmp_name from tandpstudentdata s inner join companydetails c on s.cmp_id=c.cmp_id where s.grade>=c.cutoff";
-        boolean found=false;
-        try {
-            stmt=conn.prepareStatement(query);
-            rs=stmt.executeQuery();
-            ResultSetMetaData rsd=rs.getMetaData();
-            c=rsd.getColumnCount();
-            DefaultTableModel d=(DefaultTableModel)selected.getModel();
-            d.setRowCount(0);
-            
-                while(rs.next())
-                {
-                    System.out.println(rs.getString("prn_no"));
-                    if(name.equalsIgnoreCase(rs.getString("prn_no")) || name.equalsIgnoreCase(rs.getString("cmp_id"))){
-                    String prn=rs.getString("prn_no");
-                    
-                    String sname=rs.getString("stu_name");
+   public selectedStudent(String name) {
+    initComponents();
+    connect();
+    int flag = 0;
+    boolean found = false;
+    String query = "select s.prn_no,s.stu_name,s.email_id,s.contact,s.gender,s.grade,s.branch,c.cmp_id,c.cmp_name from tandpstudentdata s inner join companydetails c on s.cmp_id=c.cmp_id where s.grade>=c.cutoff";
+    try {
+        stmt = conn.prepareStatement(query);
+        rs = stmt.executeQuery();
+        ResultSetMetaData rsd = rs.getMetaData();
+        int c = rsd.getColumnCount();
+        DefaultTableModel d = (DefaultTableModel) selected.getModel();
+        d.setRowCount(0);
+
+        while (rs.next()) {
+            Vector v = new Vector(); // Moved inside the loop
+            String prn = rs.getString("prn_no");
+            String sname = rs.getString("stu_name");
+            String email = rs.getString("email_id");
+            String cont = rs.getString("contact");
+            String gen = rs.getString("gender");
+            float grd = rs.getFloat("grade");
+            String brnch = rs.getString("branch");
+            String cmp = rs.getString("cmp_id");
+            String cname = rs.getString("cmp_name");
+
+            if(name.equalsIgnoreCase(prn) || name.equalsIgnoreCase(cmp)) {
+                flag = 1;
+
+                // Add values to the Vector
+                v.add(prn);
+                v.add(sname);
+                v.add(email);
+                v.add(cont);
+                v.add(gen);
+                v.add(grd);
+                v.add(brnch);
+                v.add(cmp);
+                v.add(cname);
+
+                d.addRow(v);
                 
-                    String email=rs.getString("email_id");
-                    String cont=rs.getString("contact");
-                    String gen=rs.getString("gender");
-                    float grd=rs.getFloat("grade");
-                    String brnch=rs.getString("branch");
-                    String cmp=rs.getString("cmp_id");
-                    String cname=rs.getString("cmp_name");
-
-                        flag=1;
-                        found=true;
-                        Vector v=new Vector();
-                        for(int i=0;i<c;i++)
-                        {
-                            v.add(prn);
-                            v.add(sname);
-                            v.add(email);
-                            v.add(cont);
-                            v.add(gen);
-                            v.add(grd);
-                            v.add(brnch);
-                            v.add(cmp);
-                            v.add(cname);
-
-                        }  
-                        d.addRow(v);
-                    }
-                }
-            
-            if(flag==0)
-                {
-                    JOptionPane.showMessageDialog(this, "Invalid user...");
-                }
-            if(!found)
-            {
-                JOptionPane.showMessageDialog(this, "Exception...");
+                
             }
-        } catch (SQLException ex) {
+            found = true;
+        }
+
+        if (flag == 0) {
+            JOptionPane.showMessageDialog(this, "Not Selected for any company.....");
+        }
+        if (!found) {
+            JOptionPane.showMessageDialog(this, "Exception...");
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(selectedStudent.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}
+
+     private void sendemail(String msg, String sub, String to[], String from) {
+         String host="smtp.gmail.com";
+         
+         Properties prop=System.getProperties();
+         prop.put("mail.smtp.host", host);
+         prop.put("mail.smtp.port", "465");
+         prop.put("mail.smtp.ssl.enable", true);
+         prop.put("mail.smtp.auth", true);
+         
+         Session ss=Session.getInstance(prop, new Authenticator(){
+             @Override protected PasswordAuthentication getPasswordAuthentication(){
+                 return new PasswordAuthentication("trainingandplacementofficertpo@gmail.com","dnktrptuzzjnepgr");
+             }
+         
+         } );
+         
+         ss.setDebug(true);
+         MimeMessage mmsg=new MimeMessage(ss);
+        try {
+            mmsg.setFrom(from);
+            for(String recep:to){
+            mmsg.addRecipients(Message.RecipientType.TO, recep);
+        }
+            
+            mmsg.setSubject(sub);
+            mmsg.setText(msg);
+            
+            Transport.send(mmsg);
+            JOptionPane.showMessageDialog(this, "Email send");
+        } catch (MessagingException ex) {
             Logger.getLogger(selectedStudent.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
-    
     
     
             
@@ -130,19 +167,17 @@ public class selectedStudent extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         selected = new javax.swing.JTable();
-        apply = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jButton1 = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(102, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Sitka Text", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 102, 102));
-        jLabel1.setText("Company List");
+        jLabel1.setText("Student Selected List");
 
-        selected.setBackground(new java.awt.Color(0, 153, 0));
-        selected.setFont(new java.awt.Font("Sylfaen", 1, 18)); // NOI18N
-        selected.setForeground(new java.awt.Color(255, 204, 0));
+        selected.setBackground(new java.awt.Color(0, 204, 204));
+        selected.setFont(new java.awt.Font("Sylfaen", 1, 14)); // NOI18N
+        selected.setForeground(new java.awt.Color(255, 255, 255));
         selected.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -170,13 +205,13 @@ public class selectedStudent extends javax.swing.JFrame {
         selected.setRowHeight(40);
         jScrollPane2.setViewportView(selected);
 
-        apply.setBackground(new java.awt.Color(102, 0, 102));
-        apply.setFont(new java.awt.Font("Verdana", 1, 24)); // NOI18N
-        apply.setForeground(new java.awt.Color(255, 153, 51));
-        apply.setText("APPLY");
-        apply.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setBackground(new java.awt.Color(0, 153, 153));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Send Mail");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                applyActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -184,29 +219,28 @@ public class selectedStudent extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 754, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(180, 180, 180))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 608, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(231, 231, 231)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(295, 295, 295)
-                        .addComponent(apply)))
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addGap(327, 327, 327)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(43, 43, 43)
+                .addContainerGap(31, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(28, 28, 28)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(apply)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addGap(12, 12, 12))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -219,15 +253,47 @@ public class selectedStudent extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void applyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String msg="You are selected for placment drive...thank you";
+        //String to="khadeyuvraj8@gmail.com";
+        String from="trainingandplacementofficertpo@gmail.com";
+        String sub="Selecting for drive";
         
-    }//GEN-LAST:event_applyActionPerformed
+        List<String> emails=new ArrayList<>();
+        /*String Query="select s.email_id from tandpstudentdata s inner join companydetails c on s.cmp_id=c.cmp_id where s.grade > c.cutoff";
+        try {
+            stmt=conn.prepareStatement(Query);
+            rs=stmt.executeQuery();
+            //boolean found=false;
+            while(rs.next())
+            {
+                String email=rs.getString("email_id");
+                emails.add(email);
+                //found=true;
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(selectedStudent.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+        
+        DefaultTableModel d = (DefaultTableModel) selected.getModel();
+        int row=d.getRowCount();
+        for(int i=0;i<row;i++)
+        {
+            String value=selected.getValueAt(i, 2).toString();
+            emails.add(value);
+        }
+        
+        String[] to=emails.toArray(new String[0]);
+        sendemail(msg,sub,to,from);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -257,18 +323,16 @@ public class selectedStudent extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new selectedStudent().setVisible(true);
-            }
-        });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton apply;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable selected;
     // End of variables declaration//GEN-END:variables
+
+   
 }
